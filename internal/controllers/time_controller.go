@@ -16,11 +16,11 @@ type TimeController struct {
 
 func NewTimeController() *TimeController {
 	return &TimeController{
-		logger:logger.GetLogger(),
+		logger: logger.GetLogger(),
 	}
 }
 
-func (pc *TimeController) Time(c *gin.Context)  {
+func (pc *TimeController) Time(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"time": time.Now().Format(time.RFC3339),
 	})

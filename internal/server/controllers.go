@@ -2,10 +2,10 @@ package server
 
 import "github.com/gin-gonic/gin"
 
-type PingController interface  {
+type PingController interface {
 	Ping(c *gin.Context)
 }
 
-type TimeController interface  {
+type TimeController interface {
 	Time(c *gin.Context)
 }

@@ -1,11 +1,9 @@
 package main
 
 import (
-
 	"guillermodoghel/golang-boilerplate/internal/database"
 	"guillermodoghel/golang-boilerplate/internal/server"
 )
-
 
 func main() {
 	db, err := database.GetDB()

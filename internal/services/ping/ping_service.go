@@ -9,14 +9,14 @@ import (
 )
 
 type PingService struct {
-	db *sqlx.DB
+	db     *sqlx.DB
 	logger *logrus.Logger
 }
 
 func NewPingService(db *sqlx.DB) *PingService {
 	return &PingService{
-		db: db,
-		logger:logger.GetLogger(),
+		db:     db,
+		logger: logger.GetLogger(),
 	}
 }
 

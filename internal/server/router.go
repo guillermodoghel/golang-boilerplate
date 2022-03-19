@@ -17,20 +17,8 @@ type Router struct {
 }
 
 func (r Router) SetupRoutes(pingController PingController, timeController TimeController) {
-	r.Engine.GET("/ping", pingController.Ping)
+	r.Engine.POST("/ping", pingController.Ping)
 	r.Engine.GET("/time", timeController.Time)
-}
-
-func NewRouter() *Router {
-	router := gin.New()
-	router.Use(gin.Recovery())
-	router.Use(gin.Logger())
-	router.Use(RequestIdMiddleware())
-	router.Use(gzip.Gzip(gzip.DefaultCompression))
-	router.NoRoute(noRouteHandler)
-	return &Router{
-		Engine: router,
-	}
 }
 
 func (r Router) Run() error {
@@ -42,6 +30,15 @@ func (r Router) Run() error {
 	return r.Engine.Run(port)
 }
 
-func noRouteHandler(c *gin.Context) {
-	rest.StatusNotFound(c)
+func NewRouter() *Router {
+	router := gin.New()
+	router.Use(gin.Recovery())
+	router.Use(gin.Logger())
+	router.Use(gzip.Gzip(gzip.DefaultCompression))
+	router.Use(RequestIdMiddleware())
+	router.NoRoute(rest.NewStatusNotFound)
+
+	return &Router{
+		Engine: router,
+	}
 }

@@ -13,20 +13,20 @@ import (
 
 type PingController struct {
 	pingService services.PingService
-	logger *logrus.Logger
+	logger      *logrus.Logger
 }
 
 func NewPingController(pingService services.PingService) *PingController {
 	return &PingController{
 		pingService: pingService,
-		logger:logger.GetLogger(),
+		logger:      logger.GetLogger(),
 	}
 }
 
-func (pc *PingController) Ping(c *gin.Context)  {
+func (pc *PingController) Ping(c *gin.Context) {
 	ping, err := pc.pingService.Ping()
 	if err != nil {
-		pc.logger.Error("[PingController] ",err)
+		pc.logger.Error("[PingController] ", err)
 		rest.NewStatusInternalServerError(c)
 		return
 	}
