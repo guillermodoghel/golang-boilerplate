@@ -14,7 +14,7 @@ type Router struct {
 }
 
 func (r Router) SetupRoutes(pingController PingController, timeController TimeController) {
-	r.Engine.POST("/ping", pingController.Ping)
+	r.Engine.GET("/ping", pingController.Ping)
 	r.Engine.GET("/time", timeController.Time)
 }
 
