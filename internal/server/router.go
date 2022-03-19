@@ -7,8 +7,6 @@ import (
 	"guillermodoghel/golang-boilerplate/internal/rest"
 )
 
-const defaultPort = "8080"
-
 type Router struct {
 	Engine *gin.Engine
 }
@@ -16,10 +14,6 @@ type Router struct {
 func (r Router) SetupRoutes(pingController PingController, timeController TimeController) {
 	r.Engine.GET("/ping", pingController.Ping)
 	r.Engine.GET("/time", timeController.Time)
-}
-
-func (r Router) Run() error {
-	return r.Engine.Run()
 }
 
 func NewRouter() *Router {
@@ -33,4 +27,8 @@ func NewRouter() *Router {
 	return &Router{
 		Engine: router,
 	}
+}
+
+func (r Router) Run() error {
+	return r.Engine.Run()
 }

@@ -1,4 +1,4 @@
-package main
+package dependency_injection
 
 import (
 	"github.com/jmoiron/sqlx"
@@ -8,7 +8,7 @@ import (
 	"guillermodoghel/golang-boilerplate/internal/services/ping"
 )
 
-func doRouterBindings(db *sqlx.DB) (server.PingController, server.TimeController) {
+func Inject(db *sqlx.DB) (server.PingController, server.TimeController) {
 	return controllers.NewPingController(ping.NewPingService(db)),
 		controllers.NewTimeController()
 }
