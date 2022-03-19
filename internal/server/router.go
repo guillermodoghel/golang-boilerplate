@@ -1,16 +1,13 @@
 package server
 
 import (
-	"os"
-
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 
-	"guillermodoghel/golang-boilerplate/internal/logger"
 	"guillermodoghel/golang-boilerplate/internal/rest"
 )
 
-const defaultPort = ":8080"
+const defaultPort = "8080"
 
 type Router struct {
 	Engine *gin.Engine
@@ -22,12 +19,7 @@ func (r Router) SetupRoutes(pingController PingController, timeController TimeCo
 }
 
 func (r Router) Run() error {
-	port := os.Getenv("PORT")
-	if port == "" {
-		logger.GetLogger().Warnf("WARNING: 'PORT' unspecified. starting server on default port '%s'\n", defaultPort)
-		port = defaultPort
-	}
-	return r.Engine.Run(port)
+	return r.Engine.Run()
 }
 
 func NewRouter() *Router {
