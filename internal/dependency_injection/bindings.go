@@ -1,14 +1,14 @@
 package dependency_injection
 
 import (
-	"github.com/jmoiron/sqlx"
+	"gorm.io/gorm"
 
 	"guillermodoghel/golang-boilerplate/internal/controllers"
 	"guillermodoghel/golang-boilerplate/internal/server"
 	"guillermodoghel/golang-boilerplate/internal/services/ping"
 )
 
-func Inject(db *sqlx.DB) (server.PingController, server.TimeController) {
+func Inject(db *gorm.DB) (server.PingController, server.TimeController) {
 	return controllers.NewPingController(ping.NewPingService(db)),
 		controllers.NewTimeController()
 }

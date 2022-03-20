@@ -2,10 +2,13 @@ package database
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"time"
 
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 const (
@@ -14,7 +17,7 @@ const (
 	maxOpenConns = 150
 )
 
-func GetDB() (*sqlx.DB, error) {
+func GetDB() (*gorm.DB, error) {
 	var (
 		dbUser     = os.Getenv("RDS_USER")
 		dbPassword = os.Getenv("RDS_PASSWORD")
@@ -23,11 +26,37 @@ func GetDB() (*sqlx.DB, error) {
 		dbName     = os.Getenv("RDS_DATABASE")
 	)
 	databaseUrl := fmt.Sprintf(mysqlUrlFmt, dbUser, dbPassword, dbHost, dbPort, dbName)
-	db, err := sqlx.Connect("mysql", databaseUrl)
+	db, err := gorm.Open(mysql.Open(databaseUrl), &gorm.Config{
+		Logger: dbLogger(),
+	})
 	if err != nil {
 		return nil, err
 	}
-	db.SetMaxIdleConns(maxIdleConns)
-	db.SetMaxOpenConns(maxOpenConns)
+	sqlDB, err := db.DB()
+	if err != nil {
+		return nil, err
+	}
+	sqlDB.SetMaxIdleConns(maxIdleConns)
+	sqlDB.SetMaxOpenConns(maxOpenConns)
 	return db, nil
+}
+
+func dbLogger() logger.Interface {
+	return logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		logger.Config{
+			SlowThreshold:             time.Second,
+			LogLevel:                  dbLoggerLevel(),
+			IgnoreRecordNotFoundError: true,
+			Colorful:                  true,
+		},
+	)
+}
+
+func dbLoggerLevel() logger.LogLevel {
+	if os.Getenv("GIN_MODE") == "release" {
+		return logger.Error
+	} else {
+		return logger.Info
+	}
 }
