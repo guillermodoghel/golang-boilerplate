@@ -4,8 +4,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 
-	"guillermodoghel/golang-boilerplate/internal/logger"
-	"guillermodoghel/golang-boilerplate/internal/services"
+	"guillermodoghel/golang-boilerplate/src/server"
+	"guillermodoghel/golang-boilerplate/src/services"
 )
 
 type PingService struct {
@@ -16,7 +16,7 @@ type PingService struct {
 func NewPingService(db *gorm.DB) *PingService {
 	return &PingService{
 		db:     db,
-		logger: logger.GetLogger(),
+		logger: server.GetLogger(),
 	}
 }
 

@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"guillermodoghel/golang-boilerplate/internal/logger"
-	"guillermodoghel/golang-boilerplate/internal/rest"
-	"guillermodoghel/golang-boilerplate/internal/services"
+	"guillermodoghel/golang-boilerplate/src/rest"
+	"guillermodoghel/golang-boilerplate/src/server"
+	"guillermodoghel/golang-boilerplate/src/services"
 )
 
 type PingController struct {
@@ -19,7 +19,7 @@ type PingController struct {
 func NewPingController(pingService services.PingService) *PingController {
 	return &PingController{
 		pingService: pingService,
-		logger:      logger.GetLogger(),
+		logger:      server.GetLogger(),
 	}
 }
 

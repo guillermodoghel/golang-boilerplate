@@ -1,20 +1,29 @@
 package main
 
 import (
-	"guillermodoghel/golang-boilerplate/internal/database"
-	"guillermodoghel/golang-boilerplate/internal/dependency_injection"
-	"guillermodoghel/golang-boilerplate/internal/logger"
-	"guillermodoghel/golang-boilerplate/internal/server"
+	"flag"
+
+	"guillermodoghel/golang-boilerplate/src/database"
+	"guillermodoghel/golang-boilerplate/src/dependency_injection"
+	"guillermodoghel/golang-boilerplate/src/server"
 )
 
 func main() {
-	logger := logger.GetLogger()
+	logger := server.GetLogger()
 	logger.Info("🚀 Starting server")
 
 	db, err := database.GetDB()
 	if err != nil {
 		logger.Error(err)
 		panic(err)
+	}
+
+	skipMigration := flag.Bool("skip-migration", false, "do not run migration scripts on start")
+	flag.Parse()
+	if !(*skipMigration) {
+		if err := database.ExecuteMigrations(db); err != nil {
+			panic(err)
+		}
 	}
 
 	router := server.NewRouter()

@@ -4,16 +4,15 @@ import (
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 
-	"guillermodoghel/golang-boilerplate/internal/rest"
+	"guillermodoghel/golang-boilerplate/src/rest"
 )
 
 type Router struct {
 	Engine *gin.Engine
 }
 
-func (r Router) SetupRoutes(pingController PingController, timeController TimeController) {
+func (r Router) SetupRoutes(pingController PingController) {
 	r.Engine.GET("/ping", pingController.Ping)
-	r.Engine.GET("/time", timeController.Time)
 }
 
 func NewRouter() *Router {
